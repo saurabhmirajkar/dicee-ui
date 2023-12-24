@@ -8,6 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var leftDiceNumber: Int = 1
+    @State var rightDiceNumber: Int = 1
+    
+    @State var showingAlert = false
+    
     var body: some View {
         ZStack {
             Image("background")
@@ -19,21 +25,28 @@ struct ContentView: View {
                 Image("diceeLogo")
                 Spacer()
                 HStack {
-                    DiceView(n: 1)
-                    DiceView(n: 1)
+                    DiceView(n: leftDiceNumber)
+                    DiceView(n: rightDiceNumber)
                 }
                 .padding(.horizontal)
                 Spacer()
                 Button(action: {
                     // onclick action
+                    self.leftDiceNumber = Int.random(in: 1...6)
+                    self.rightDiceNumber = Int.random(in: 1...6)
+                    showingAlert = leftDiceNumber == rightDiceNumber
                 }, label: {
                     Text("Roll")
-                        .font(.system(size:50))
+                        .font(.system(size: 50))
                         .fontWeight(.heavy)
                         .foregroundStyle(.white)
                         .padding(.horizontal)
                 })
                 .background(.red)
+                .frame(height:100)
+                .alert("Congratulation! You have won the jackpot!", isPresented: $showingAlert) {
+
+                }
             }
         }
     }
